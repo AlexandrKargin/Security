@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+  <meta charset="UTF-8">
+
+
+  <title>Admin Page</title>
+</head>
+<body>
+
+
+<h1>Welcome, Admin!</h1>
+
+<a th:href="@{/users}" class="btn btn-primary">Users</a>
+
+<a th:href="@{/addNewUser}" class="btn btn-primary">Add New User</a>
+
+<a th:href="@{/logout}">Logout</a>
+
+
+<!-- Add other content and features specific to the admin page here -->
+</body>
+</html>
