@@ -1,5 +1,6 @@
 package pp3.security.service;
 
+import pp3.security.dto.UserDtoRequest;
 import pp3.security.module.User;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void saveUser(User user);
+    User createUser(UserDtoRequest dtoRequest);
 
-    void updateUser(Long id, User updatedUser);
+    User updateUser(UserDtoRequest dtoRequest,Long id);
 
     void deleteUser(Long id);
 }

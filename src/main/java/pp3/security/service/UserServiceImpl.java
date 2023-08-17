@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pp3.security.dto.UserDtoRequest;
 import pp3.security.module.User;
 import pp3.security.repository.UserRepository;
 import pp3.security.security.UserPrincipal;
@@ -46,32 +47,44 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    @Override
-    public void saveUser(User user) {
-        String encoderPassword = encoder.encode(user.getPassword());
-        user.setPassword(encoderPassword);
-        userRepository.save(user);
+    private User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public void updateUser(Long id, User updatedUser) {
+    public User createUser(UserDtoRequest dtoRequest) {
+        User createdUser = new User();
+
+        createdUser.setFirstName(dtoRequest.getFirstName());
+        createdUser.setLastName(dtoRequest.getLastName());
+        createdUser.setAge(dtoRequest.getAge());
+        createdUser.setUsername(dtoRequest.getUsername());
+        createdUser.setPassword(encoder.encode(dtoRequest.getPassword()));
+
+        return this.save(createdUser);
+    }
+
+    @Override
+    public User updateUser(UserDtoRequest dtoRequest,Long id) {
         User user = this.getByIdThrowException(id);
-        if (updatedUser.getFirstName() != null) {
-            user.setFirstName(updatedUser.getFirstName());
+
+        if (dtoRequest.getFirstName() != null) {
+            user.setFirstName(dtoRequest.getFirstName());
         }
-        if (updatedUser.getLastName() != null) {
-            user.setLastName(updatedUser.getLastName());
+        if (dtoRequest.getLastName() != null) {
+            user.setLastName(dtoRequest.getLastName());
         }
-        if (updatedUser.getAge() != 0) {
-            user.setAge(updatedUser.getAge());
+        if (dtoRequest.getAge() != 0) {
+            user.setAge(dtoRequest.getAge());
         }
-        if (updatedUser.getUsername() != null) {
-            user.setUsername(updatedUser.getUsername());
+        if (dtoRequest.getUsername() != null) {
+            user.setUsername(dtoRequest.getUsername());
         }
-        if (updatedUser.getPassword() != null) {
-            user.setPassword(encoder.encode(updatedUser.getPassword()));
+        if (dtoRequest.getPassword() != null) {
+            user.setPassword(encoder.encode(dtoRequest.getPassword()));
         }
-        userRepository.save(user);
+
+        return this.save(user);
     }
 
     @Override
